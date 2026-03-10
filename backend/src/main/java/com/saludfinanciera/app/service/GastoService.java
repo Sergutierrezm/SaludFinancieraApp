@@ -43,4 +43,24 @@ public class GastoService {
         Gasto guardado = gastoRepository.save(gasto);
         return gastoMapper.toDTO(guardado);
     }
+
+    public void borrarPorId(Long id) {
+        gastoRepository.deleteById(id);
+    }
+
+    public GastoDTO actualizar(Long id, GastoDTO dto) {
+        Gasto gastoExistente = gastoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Gasto no encontrado"));
+
+        // Actualizar campos
+        gastoExistente.setCantidad(dto.getCantidad());
+        gastoExistente.setComercio(dto.getComercio());
+        gastoExistente.setDescripcion(dto.getDescripcion());
+        gastoExistente.setFechaGasto(dto.getFechaGasto());
+        gastoExistente.setMesContabilizacion(dto.getMesContabilizacion());
+        gastoExistente.setFechaRegistro(dto.getFechaRegistro());
+
+        Gasto actualizado = gastoRepository.save(gastoExistente);
+        return gastoMapper.toDTO(actualizado);
+    }
 }

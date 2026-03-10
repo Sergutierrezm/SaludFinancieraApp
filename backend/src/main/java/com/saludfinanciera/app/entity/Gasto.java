@@ -1,5 +1,7 @@
 package com.saludfinanciera.app.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.saludfinanciera.app.converter.YearMonthAttributeConverter;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -13,10 +15,13 @@ public class Gasto {
 
     private Long id;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaGasto; // Fecha real de la compra
 
+    @Convert(converter = YearMonthAttributeConverter.class)
     private YearMonth mesContabilizacion; // Mes al que se asigna el gasto
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaRegistro; // Fecha en que se añade a la app
 
     private String comercio;
