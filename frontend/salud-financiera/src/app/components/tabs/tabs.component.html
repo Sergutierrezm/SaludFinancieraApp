@@ -1,0 +1,16 @@
+<mat-tab-group>
+    <mat-tab *ngFor="let tab of tabs; let i = index" [label]="tab.title">
+  
+      <ng-container [ngSwitch]="tab.component">
+        <app-ingresos *ngSwitchCase="'ingresos'"></app-ingresos>
+        <app-gastos *ngSwitchCase="'gastos'"></app-gastos>
+        <app-gastos-fijos *ngSwitchCase="'gastos-fijos'"></app-gastos-fijos>
+        <app-dashboard *ngSwitchCase="'dashboard'"></app-dashboard>
+      </ng-container>
+  
+      <button (click)="removeTab(i)">❌ Cerrar</button>
+    </mat-tab>
+  </mat-tab-group>
+  
+  <button (click)="addTab('Nueva sección', 'dashboard')">➕ Añadir sección</button>
+  <button (click)="clearTabs()">🗑 Limpiar todas</button>
