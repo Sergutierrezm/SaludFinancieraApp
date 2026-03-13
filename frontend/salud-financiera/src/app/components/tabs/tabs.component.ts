@@ -1,31 +1,60 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatTabsModule } from '@angular/material/tabs';
+
+import { Dashboard } from '../dashboard/dashboard';
+import { Ingresos } from '../ingresos/ingresos';
+import { Gastos } from '../gastos/gastos';
+import { GastosFijos } from '../gastos-fijos/gastos-fijos';
 
 @Component({
   selector: 'app-tabs',
-  templateUrl: './tabs.component.html',  // corregido
-  styleUrls: ['./tabs.component.css']    // corregido
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatTabsModule,
+    Dashboard,
+    Ingresos,
+    Gastos,
+    GastosFijos
+  ],
+  templateUrl: './tabs.component.html',
+  styleUrls: ['./tabs.component.css']
 })
 export class TabsComponent {
 
-  // Lista de pestañas iniciales
   tabs = [
-    { title: 'Ingresos', component: 'ingresos' },
-    { title: 'Gastos', component: 'gastos' },
-    { title: 'Gastos Fijos', component: 'gastos-fijos' },
-    { title: 'Balance', component: 'dashboard' }
+    { title: 'Marzo 2026', month: 3, year: 2026, component: 'dashboard' },
+    { title: 'Febrero 2026', month: 2, year: 2026, component: 'dashboard' }
   ];
 
-  // Añadir nueva pestaña
-  addTab(title: string, component: string) {
-    this.tabs.push({ title, component });
+  addMonthTab() {
+    const lastTab = this.tabs[this.tabs.length - 1];
+    let newMonth = lastTab.month + 1;
+    let newYear = lastTab.year;
+    if (newMonth > 12) {
+      newMonth = 1;
+      newYear += 1;
+    }
+    this.tabs.push({
+      title: `${this.getMonthName(newMonth)} ${newYear}`,
+      month: newMonth,
+      year: newYear,
+      component: 'dashboard'
+    });
   }
 
-  // Cerrar pestaña por índice
+  getMonthName(month: number) {
+    return [
+      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ][month - 1];
+  }
+
   removeTab(index: number) {
     this.tabs.splice(index, 1);
   }
 
-  // Limpiar todas las pestañas
   clearTabs() {
     this.tabs = [];
   }

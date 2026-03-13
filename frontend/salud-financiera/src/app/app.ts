@@ -1,12 +1,11 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+import { TabsComponent } from './components/tabs/tabs.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.html',
-  styleUrl: './app.css'
+  standalone: true,
+  imports: [TabsComponent],
+  template: `<app-tabs></app-tabs>`, // renderiza las pestañas directamente
+  styleUrls: ['./app.css']
 })
-export class App {
-  protected readonly title = signal('salud-financiera');
-}
+export class App {}
