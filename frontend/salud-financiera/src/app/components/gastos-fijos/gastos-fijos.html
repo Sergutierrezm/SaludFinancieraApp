@@ -1,1 +1,26 @@
-<p>gastos-fijos works!</p>
+<h2>Gastos Fijos - {{ month }}/{{ year }}</h2>
+
+<form (ngSubmit)="addGastoFijo()">
+  <label>
+    Nombre:
+    <input type="text" [(ngModel)]="nuevoGasto.nombre" name="nombre" required />
+  </label>
+  <label>
+    Cantidad:
+    <input type="number" [(ngModel)]="nuevoGasto.cantidad" name="cantidad" required />
+  </label>
+  <label>
+    Descripción:
+    <input type="text" [(ngModel)]="nuevoGasto.descripcion" name="descripcion" />
+  </label>
+  <button type="submit">➕ Añadir gasto fijo</button>
+</form>
+
+<hr />
+
+<ul>
+  <li *ngFor="let gasto of gastosFijosList()">
+    {{ gasto.nombre }} - {{ gasto.cantidad }} € - {{ gasto.descripcion }}
+    <button (click)="deleteGastoFijo(gasto.id!)">❌</button>
+  </li>
+</ul>

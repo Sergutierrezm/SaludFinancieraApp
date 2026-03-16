@@ -4,7 +4,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 
 import { Dashboard } from '../dashboard/dashboard';
 import { Ingresos } from '../ingresos/ingresos';
-import { Gastos } from '../gastos/gastos';
+import { GastosComponent } from '../gastos/gastos';
 import { GastosFijos } from '../gastos-fijos/gastos-fijos';
 
 @Component({
@@ -15,7 +15,7 @@ import { GastosFijos } from '../gastos-fijos/gastos-fijos';
     MatTabsModule,
     Dashboard,
     Ingresos,
-    Gastos,
+    GastosComponent,
     GastosFijos
   ],
   templateUrl: './tabs.component.html',
@@ -23,9 +23,9 @@ import { GastosFijos } from '../gastos-fijos/gastos-fijos';
 })
 export class TabsComponent {
 
-  tabs = [
-    { title: 'Marzo 2026', month: 3, year: 2026, component: 'dashboard' },
-    { title: 'Febrero 2026', month: 2, year: 2026, component: 'dashboard' }
+  tabs: { title: string; month: number; year: number }[] = [
+    { title: 'Marzo 2026', month: 3, year: 2026 },
+    { title: 'Febrero 2026', month: 2, year: 2026 }
   ];
 
   addMonthTab() {
@@ -36,11 +36,11 @@ export class TabsComponent {
       newMonth = 1;
       newYear += 1;
     }
+
     this.tabs.push({
       title: `${this.getMonthName(newMonth)} ${newYear}`,
       month: newMonth,
-      year: newYear,
-      component: 'dashboard'
+      year: newYear
     });
   }
 
@@ -49,13 +49,5 @@ export class TabsComponent {
       'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
       'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
     ][month - 1];
-  }
-
-  removeTab(index: number) {
-    this.tabs.splice(index, 1);
-  }
-
-  clearTabs() {
-    this.tabs = [];
   }
 }

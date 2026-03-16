@@ -1,1 +1,23 @@
-<p>ingresos works!</p>
+<h2>Ingresos - {{ month }}/{{ year }}</h2>
+
+<!-- Formulario para añadir un ingreso -->
+<form (ngSubmit)="addIngreso()">
+  <label>
+    Cantidad:
+    <input type="number" [(ngModel)]="nuevoIngreso.cantidad" name="cantidad" required />
+  </label>
+  <label>
+    Descripción:
+    <input type="text" [(ngModel)]="nuevoIngreso.descripcion" name="descripcion" />
+  </label>
+  <button type="submit">➕ Añadir ingreso</button>
+</form>
+
+<hr />
+
+<!-- Lista de ingresos del mes -->
+<ul>
+  <li *ngFor="let ingreso of ingresosList()">
+    {{ ingreso.cantidad }} € - {{ ingreso.descripcion }}
+  </li>
+</ul>

@@ -1,1 +1,22 @@
-<p>gastos works!</p>
+<h2>Gastos - {{ month }}/{{ year }}</h2>
+
+<form (ngSubmit)="addGasto()">
+  <label>
+    Cantidad:
+    <input type="number" [(ngModel)]="nuevoGasto.cantidad" name="cantidad" required />
+  </label>
+  <label>
+    Descripción:
+    <input type="text" [(ngModel)]="nuevoGasto.descripcion" name="descripcion" />
+  </label>
+  <button type="submit">➕ Añadir gasto</button>
+</form>
+
+<hr />
+
+<ul>
+  <li *ngFor="let gasto of gastosList()">
+    {{ gasto.cantidad }} € - {{ gasto.descripcion }}
+    <button (click)="borrarGasto(gasto.id)">❌</button>
+  </li>
+</ul>
