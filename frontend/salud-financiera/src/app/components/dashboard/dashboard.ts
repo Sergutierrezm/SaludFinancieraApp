@@ -1,35 +1,41 @@
+// src/app/components/dashboard/dashboard.ts
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Balance } from '../../services/balance';
+import { FinanzasService } from '../../services/finanzas.service';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './dashboard.html',
-  styleUrls: ['./dashboard.css'],
+  styleUrls: ['./dashboard.css']
 })
 export class Dashboard implements OnInit {
+
   @Input() month!: number;
   @Input() year!: number;
 
-  ingresos = 0;
-  gastos = 0;
-  saldo = 0;
-
-  constructor(private balanceService: Balance) {}
+  constructor(public finanzasService: FinanzasService) {}
 
   ngOnInit() {
-    // Datos de prueba antes de conectar al backend
-    this.ingresos = 1561;
-    this.gastos = 902;
-    this.saldo = this.ingresos - this.gastos;
+    if (this.month && this.year) {
+      this.finanzasService.getIngresosPorMes(this.year, this.month).subscribe();
+      this.finanzasService.getGastosPorMes(this.year, this.month).subscribe();
+      this.finanzasService.getGastosFijosPorMes(this.year, this.month).subscribe();
+    }
+  }
 
-    // Para usar el backend real:
-    // this.balanceService.getBalance(this.year, this.month).subscribe((data: any) => {
-    //   this.ingresos = data.ingresos;
-    //   this.gastos = data.gastos;
-    //   this.saldo = data.saldo;
-    // });
+  get totalIngresos() {
+    return this.finanzasService.ingresosSignal().reduce((a: number, b) => a + b.cantidad, 0);
+  }
+
+  get totalGastos() {
+    const gastosNormales = this.finanzasService.gastosSignal().reduce((a: number, b) => a + b.cantidad, 0);
+    const gastosFijos = this.finanzasService.gastosFijosSignal().reduce((a: number, b) => a + b.cantidad, 0);
+    return gastosNormales + gastosFijos;
+  }
+
+  get saldo() {
+    return this.totalIngresos - this.totalGastos;
   }
 }

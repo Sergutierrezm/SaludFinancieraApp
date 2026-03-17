@@ -1,7 +1,8 @@
-import { Component, Input, OnInit, signal } from '@angular/core';
+// src/app/components/ingresos/ingresos.ts
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IngresosService, Ingreso } from '../../services/ingreso';
+import { FinanzasService, Ingreso } from '../../services/finanzas.service';
 
 @Component({
   selector: 'app-ingresos',
@@ -15,46 +16,31 @@ export class Ingresos implements OnInit {
   @Input() month!: number;
   @Input() year!: number;
 
-  // Lista de ingresos del mes actual
-  ingresosList = signal<Ingreso[]>([]);
+  nuevoIngreso: Ingreso = { cantidad: 0, descripcion: '' };
 
-  // Modelo para el formulario
-  nuevoIngreso: Ingreso = {
-    cantidad: 0,
-    descripcion: ''
-  };
-
-  constructor(private ingresosService: IngresosService) {}
+  constructor(public finanzasService: FinanzasService) {}
 
   ngOnInit() {
-    this.cargarIngresos();
+    if (this.month && this.year) {
+      this.finanzasService.getIngresosPorMes(this.year, this.month).subscribe();
+    }
   }
 
-  // Cargar ingresos del mes/año actual
-  cargarIngresos() {
-    if (!this.month || !this.year) return;
-
-    this.ingresosService.getIngresosPorMes(this.year, this.month).subscribe({
-      next: (data: Ingreso[]) => this.ingresosList.set(data),
-      error: (err: any) => console.error(err)
-    });
-  }
-
-  // Añadir un nuevo ingreso al mes actual
   addIngreso() {
     if (this.nuevoIngreso.cantidad <= 0) return;
 
-    const ingresoParaBackend: Ingreso = {
+    const ingreso: Ingreso = {
       ...this.nuevoIngreso,
       mesContabilizacion: `${this.year}-${this.month.toString().padStart(2,'0')}`
     };
 
-    this.ingresosService.addIngreso(ingresoParaBackend).subscribe({
-      next: () => {
-        this.cargarIngresos(); // recargar la lista
-        this.nuevoIngreso = { cantidad: 0, descripcion: '' }; // reset formulario
-      },
-      error: (err: any) => console.error(err)
+    this.finanzasService.addIngreso(ingreso).subscribe(() => {
+      this.nuevoIngreso = { cantidad: 0, descripcion: '' };
+      // No hace falta llamar getIngresosPorMes aquí porque el servicio lo recarga automáticamente
     });
+  }
+
+  get ingresosList() {
+    return this.finanzasService.ingresosSignal();
   }
 }

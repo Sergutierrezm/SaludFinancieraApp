@@ -1,42 +1,58 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 export interface Ingreso {
   id?: number;
-  origen?: string;
   cantidad: number;
-  fechaIngreso?: string;
-  mesContabilizacion?: string;
   descripcion?: string;
+  mesContabilizacion?: string;
 }
 
-@Injectable({
-  providedIn: 'root' // Evita que tengas que ponerlo en providers del componente
-})
-export class IngresosService {
+export interface Gasto {
+  id?: number;
+  cantidad: number;
+  descripcion?: string;
+  mesContabilizacion?: string;
+}
 
-  private baseUrl = 'http://localhost:8080/ingresos'; // Ajusta según tu backend
+@Injectable({ providedIn: 'root' })
+export class FinanzasService {
+
+  ingresosSignal = signal<Ingreso[]>([]);
+  gastosSignal = signal<Gasto[]>([]);
+
+  private baseUrl = 'http://localhost:8080';
 
   constructor(private http: HttpClient) {}
 
-  getIngresos(): Observable<Ingreso[]> {
-    return this.http.get<Ingreso[]>(this.baseUrl);
-  }
-
+  // INGRESOS
   getIngresosPorMes(year: number, month: number): Observable<Ingreso[]> {
-    return this.http.get<Ingreso[]>(`${this.baseUrl}/mes?year=${year}&month=${month}`);
+    return this.http.get<Ingreso[]>(`${this.baseUrl}/ingresos/mes?year=${year}&month=${month}`)
+      .pipe(tap(data => this.ingresosSignal.set(data)));
   }
 
   addIngreso(ingreso: Ingreso): Observable<Ingreso> {
-    return this.http.post<Ingreso>(this.baseUrl, ingreso);
+    return this.http.post<Ingreso>(`${this.baseUrl}/ingresos`, ingreso).pipe(
+      tap(() => {
+        const [year, month] = ingreso.mesContabilizacion!.split('-').map(Number);
+        this.getIngresosPorMes(year, month).subscribe();
+      })
+    );
   }
 
-  updateIngreso(id: number, ingreso: Ingreso): Observable<Ingreso> {
-    return this.http.put<Ingreso>(`${this.baseUrl}/${id}`, ingreso);
+  // GASTOS
+  getGastosPorMes(year: number, month: number): Observable<Gasto[]> {
+    return this.http.get<Gasto[]>(`${this.baseUrl}/gastos/mes?year=${year}&month=${month}`)
+      .pipe(tap(data => this.gastosSignal.set(data)));
   }
 
-  deleteIngreso(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  addGasto(gasto: Gasto): Observable<Gasto> {
+    return this.http.post<Gasto>(`${this.baseUrl}/gastos`, gasto).pipe(
+      tap(() => {
+        const [year, month] = gasto.mesContabilizacion!.split('-').map(Number);
+        this.getGastosPorMes(year, month).subscribe();
+      })
+    );
   }
 }

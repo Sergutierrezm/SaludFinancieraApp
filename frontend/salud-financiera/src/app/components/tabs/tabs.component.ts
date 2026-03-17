@@ -5,7 +5,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { Dashboard } from '../dashboard/dashboard';
 import { Ingresos } from '../ingresos/ingresos';
 import { GastosComponent } from '../gastos/gastos';
-import { GastosFijos } from '../gastos-fijos/gastos-fijos';
+import { GastosFijosComponent } from '../gastos-fijos/gastos-fijos';
 
 @Component({
   selector: 'app-tabs',
@@ -16,7 +16,7 @@ import { GastosFijos } from '../gastos-fijos/gastos-fijos';
     Dashboard,
     Ingresos,
     GastosComponent,
-    GastosFijos
+    GastosFijosComponent
   ],
   templateUrl: './tabs.component.html',
   styleUrls: ['./tabs.component.css']

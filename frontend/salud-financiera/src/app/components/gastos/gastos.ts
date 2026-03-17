@@ -1,7 +1,7 @@
-import { Component, Input, OnInit, signal } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { GastosService, Gasto } from '../../services/gasto';
+import { FinanzasService, Gasto } from '../../services/finanzas.service';
 
 @Component({
   selector: 'app-gastos',
@@ -15,49 +15,28 @@ export class GastosComponent implements OnInit {
   @Input() month!: number;
   @Input() year!: number;
 
-  gastosList = signal<Gasto[]>([]);
+  nuevoGasto: Gasto = { cantidad: 0, descripcion: '' };
 
-  nuevoGasto: Gasto = {
-    cantidad: 0,
-    descripcion: ''
-  };
-
-  constructor(private gastosService: GastosService) {}
+  constructor(public finanzasService: FinanzasService) {}
 
   ngOnInit() {
-    this.cargarGastos();
-  }
-
-  cargarGastos() {
-    if (!this.month || !this.year) return;
-    this.gastosService.getGastosPorMes(this.year, this.month).subscribe({
-      next: (data: Gasto[]) => this.gastosList.set(data),
-      error: (err: any) => console.error(err)
-    });
+    this.finanzasService.getGastosPorMes(this.year, this.month).subscribe();
   }
 
   addGasto() {
     if (this.nuevoGasto.cantidad <= 0) return;
 
-    const gastoParaBackend: Gasto = {
+    const gasto: Gasto = {
       ...this.nuevoGasto,
       mesContabilizacion: `${this.year}-${this.month.toString().padStart(2,'0')}`
     };
 
-    this.gastosService.addGasto(gastoParaBackend).subscribe({
-      next: () => {
-        this.cargarGastos();
-        this.nuevoGasto = { cantidad: 0, descripcion: '' };
-      },
-      error: (err: any) => console.error(err)
+    this.finanzasService.addGasto(gasto).subscribe(() => {
+      this.nuevoGasto = { cantidad: 0, descripcion: '' };
     });
   }
 
-  borrarGasto(id?: number) {
-    if (!id) return;
-    this.gastosService.deleteGasto(id).subscribe({
-      next: () => this.cargarGastos(),
-      error: (err: any) => console.error(err)
-    });
+  get gastosList() {
+    return this.finanzasService.gastosSignal();
   }
 }
