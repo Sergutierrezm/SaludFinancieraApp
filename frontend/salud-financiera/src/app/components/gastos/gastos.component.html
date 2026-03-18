@@ -1,0 +1,10 @@
+<h2>Gastos</h2>
+<input [(ngModel)]="descripcion" placeholder="Descripción" />
+<input type="number" [(ngModel)]="cantidad" placeholder="Cantidad" />
+<button (click)="agregarGasto()">Añadir gasto</button>
+
+<ul>
+  <li *ngFor="let g of gastosService.getGastos()()">
+    {{ g.descripcion }} - {{ g.cantidad }}
+  </li>
+</ul>
