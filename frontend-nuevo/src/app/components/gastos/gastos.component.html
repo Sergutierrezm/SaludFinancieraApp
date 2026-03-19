@@ -1,0 +1,23 @@
+<div style="padding: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+  <h2 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px;">
+    💰 Mis Gastos (Desde Spring Boot)
+  </h2>
+
+  <div style="margin-top: 20px;">
+    @for (gasto of listaGastos(); track $index) {
+      <div style="background: #f8f9fa; margin-bottom: 8px; padding: 12px; border-radius: 5px; display: flex; justify-content: space-between; border-left: 4px solid #e74c3c;">
+        <div>
+          <small style="color: #7f8c8d; display: block;">{{ gasto.fechaGasto }}</small>
+          <strong style="font-size: 1.1em;">{{ gasto.comercio }}</strong>
+        </div>
+        <div style="font-weight: bold; font-size: 1.2em; color: #c0392b;">
+          {{ gasto.cantidad }} €
+        </div>
+      </div>
+    } @empty {
+      <p style="color: #95a5a6; font-style: italic;">
+        No hay gastos registrados. ¿Está el Backend encendido?
+      </p>
+    }
+  </div>
+</div>

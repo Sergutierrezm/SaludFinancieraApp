@@ -1,0 +1,233 @@
+/* Contenedor Principal */
+:host {
+    display: block;
+    background-color: #f1f5f9; /* Gris muy claro azulado */
+    min-height: 100vh;
+    padding: 30px 20px;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  }
+  
+  .dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  /* Encabezado */
+  .dashboard-header {
+    margin-bottom: 30px;
+  }
+  
+  .dashboard-header h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: #1e293b;
+    font-weight: 800;
+  }
+  
+  .date {
+    color: #64748b;
+    font-size: 0.95rem;
+    margin-top: 5px;
+    text-transform: capitalize;
+  }
+  
+  /* GRID SUPERIOR (Ingresos y Gastos Fijos) */
+  .top-management-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 25px;
+    margin-bottom: 30px;
+  }
+  
+  .management-card {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease;
+  }
+  
+  .management-card:hover {
+    transform: translateY(-2px);
+  }
+  
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  
+  .card-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #334155;
+  }
+  
+  /* Badges de Totales */
+  .total-badge {
+    background: #dcfce7;
+    color: #166534;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+  
+  .total-badge-red {
+    background: #fee2e2;
+    color: #991b1b;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+  
+  /* Listas Internas */
+  .mini-list {
+    max-height: 220px;
+    overflow-y: auto;
+    margin-bottom: 15px;
+    padding-right: 5px;
+  }
+  
+  /* Personalización del scroll */
+  .mini-list::-webkit-scrollbar {
+    width: 4px;
+  }
+  .mini-list::-webkit-scrollbar-thumb {
+    background: #e2e8f0;
+    border-radius: 10px;
+  }
+  
+  .list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f8fafc;
+  }
+  
+  .list-item:last-child {
+    border-bottom: none;
+  }
+  
+  .amount-pos { color: #10b981; font-weight: 700; }
+  .amount-neg { color: #ef4444; font-weight: 700; }
+  
+  /* Botón Añadir */
+  .btn-add {
+    background: #f8fafc;
+    border: 2px dashed #cbd5e1;
+    color: #64748b;
+    padding: 10px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  
+  .btn-add:hover {
+    background: #f1f5f9;
+    border-color: #94a3b8;
+    color: #1e293b;
+  }
+  
+  /* SECCIÓN INFERIOR (Historial) */
+  .table-section {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+  
+  .table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+  }
+  
+  .table-header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #1e293b;
+  }
+  
+  .balance-summary {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #64748b;
+  }
+  
+  /* Tabla Moderna */
+  .modern-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .modern-table th {
+    text-align: left;
+    background: #f8fafc;
+    padding: 15px;
+    color: #64748b;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+    border-bottom: 2px solid #f1f5f9;
+  }
+  
+  .modern-table td {
+    padding: 15px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #334155;
+    vertical-align: middle;
+  }
+  
+  .comercio-sub {
+    display: block;
+    font-size: 0.8rem;
+    color: #94a3b8;
+    font-weight: normal;
+  }
+  
+  /* Etiquetas de Tipo */
+  .type-tag {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+  }
+  
+  .tag-fijo { background: #e0f2fe; color: #0369a1; }
+  .tag-var { background: #fef3c7; color: #92400e; }
+  
+  .text-right { text-align: right; }
+  .text-red { color: #ef4444; font-weight: 700; }
+  .text-green { color: #10b981; font-weight: 700; }
+  
+  .empty-text {
+    text-align: center;
+    color: #94a3b8;
+    padding: 20px;
+    font-style: italic;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .top-management-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .modern-table th:nth-child(3),
+    .modern-table td:nth-child(3) {
+      display: none; /* Oculta fecha en móviles pequeños si es necesario */
+    }
+  }

@@ -1,0 +1,85 @@
+<div class="dashboard-container">
+  <header class="dashboard-header">
+    <h1>Gestión de Finanzas Personales</h1>
+    <p class="date">{{ today | date:'EEEE, d MMMM y' }}</p>
+  </header>
+
+  <div class="top-management-grid">
+    
+    <div class="management-card income-section">
+      <div class="card-header">
+        <h3>💰 Mis Ingresos</h3>
+        <span class="total-badge">{{ totalIngresos() | currency:'EUR' }}</span>
+      </div>
+      <div class="mini-list">
+        @for (ingreso of listaIngresos(); track $index) {
+          <div class="list-item">
+            <span>{{ ingreso.descripcion }}</span>
+            <span class="amount-pos">+{{ ingreso.cantidad | currency:'EUR' }}</span>
+          </div>
+        } @empty {
+          <p class="empty-text">No hay ingresos registrados.</p>
+        }
+      </div>
+      <button class="btn-add">+ Añadir Ingreso</button>
+    </div>
+
+    <div class="management-card fixed-expenses-section">
+      <div class="card-header">
+        <h3>🏠 Gastos Fijos</h3>
+        <span class="total-badge-red">{{ totalGastosFijos() | currency:'EUR' }}</span>
+      </div>
+      <div class="mini-list">
+        @for (gasto of listaGastosDetallados(); track $index) {
+          @if (gasto.tipo === 'Fijo') {
+            <div class="list-item">
+              <span>{{ gasto.descripcion }}</span>
+              <span class="amount-neg">-{{ gasto.cantidad | currency:'EUR' }}</span>
+            </div>
+          }
+        } @empty {
+          <p class="empty-text">No hay gastos fijos.</p>
+        }
+      </div>
+      <button class="btn-add">+ Añadir Gasto Fijo</button>
+    </div>
+
+  </div>
+
+  <div class="table-section">
+    <div class="table-header">
+      <h2>Historial de Movimientos</h2>
+      <div class="balance-summary">
+        Saldo Neto: <strong [ngClass]="saldoNeto() >= 0 ? 'text-green' : 'text-red'">{{ saldoNeto() | currency:'EUR' }}</strong>
+      </div>
+    </div>
+
+    <table class="modern-table">
+      <thead>
+        <tr>
+          <th>Descripción</th>
+          <th>Tipo</th>
+          <th>Fecha</th>
+          <th class="text-right">Cantidad</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (gasto of listaGastosDetallados(); track $index) {
+          <tr>
+            <td>
+              <strong>{{ gasto.descripcion }}</strong>
+              <div class="comercio-sub">{{ gasto.comercio || 'General' }}</div>
+            </td>
+            <td>
+              <span class="type-tag" [ngClass]="gasto.tipo === 'Fijo' ? 'tag-fijo' : 'tag-var'">
+                {{ gasto.tipo }}
+              </span>
+            </td>
+            <td>{{ formatFecha(gasto.fechaGasto || gasto.fechaRegistro) }}</td>
+            <td class="text-right text-red">-{{ gasto.cantidad | currency:'EUR' }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+<div class="card">
+    <h3>📅 Gastos Fijos (Mensuales)</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Cantidad</th>
+          <th>Mes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of listaFijos()">
+          <td>{{ item.nombre }}</td>
+          <td>{{ item.cantidad }} €</td>
+          <td>{{ item.mesContabilizacion }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

@@ -1,0 +1,16 @@
+<div class="dashboard-grid">
+    <div class="card income">
+      <h4>Total Ingresos</h4>
+      <p>{{ totalIngresos() }} €</p>
+    </div>
+  
+    <div class="card expenses">
+      <h4>Gastos Totales</h4>
+      <p>{{ totalGastosFijos() + totalGastosVar() }} €</p>
+    </div>
+  
+    <div class="card balance" [ngClass]="{'positive': saldoNeto() >= 0, 'negative': saldoNeto() < 0}">
+      <h4>Ahorro Neto</h4>
+      <p>{{ saldoNeto() }} €</p>
+    </div>
+  </div>
