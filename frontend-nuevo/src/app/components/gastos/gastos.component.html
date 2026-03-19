@@ -1,23 +1,52 @@
-<div style="padding: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-  <h2 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px;">
-    💰 Mis Gastos (Desde Spring Boot)
-  </h2>
+<div class="gastos-container">
+  <div class="header-actions">
+    <div class="title-group">
+      <h2>Listado de Gastos Variables</h2>
+      <button class="btn-nuevo-gasto" (click)="mostrarFormulario.set(!mostrarFormulario())">
+        @if (!mostrarFormulario()) {
+          <span>+ Nuevo Gasto</span>
+        } @else {
+          <span>✕ Cancelar</span>
+        }
+      </button>
+    </div>
+    
+    <div class="date-filters">
+      <select [(ngModel)]="mesSeleccionado" (change)="onFechaChange()">
+        <option [value]="1">Enero</option>
+        <option [value]="2">Febrero</option>
+        <option [value]="3">Marzo</option>
+        </select>
 
-  <div style="margin-top: 20px;">
-    @for (gasto of listaGastos(); track $index) {
-      <div style="background: #f8f9fa; margin-bottom: 8px; padding: 12px; border-radius: 5px; display: flex; justify-content: space-between; border-left: 4px solid #e74c3c;">
-        <div>
-          <small style="color: #7f8c8d; display: block;">{{ gasto.fechaGasto }}</small>
-          <strong style="font-size: 1.1em;">{{ gasto.comercio }}</strong>
-        </div>
-        <div style="font-weight: bold; font-size: 1.2em; color: #c0392b;">
-          {{ gasto.cantidad }} €
-        </div>
-      </div>
-    } @empty {
-      <p style="color: #95a5a6; font-style: italic;">
-        No hay gastos registrados. ¿Está el Backend encendido?
-      </p>
-    }
+      <select [(ngModel)]="anioSeleccionado" (change)="onFechaChange()">
+        <option [value]="2025">2025</option>
+        <option [value]="2026">2026</option>
+      </select>
+    </div>
   </div>
-</div>
+
+  @if (mostrarFormulario()) {
+    <div class="form-card animate-in">
+      <div class="form-grid">
+        <div class="input-field">
+          <label>Fecha</label>
+          <input type="date" [(ngModel)]="nuevoGasto.fechaGasto">
+        </div>
+        <div class="input-field">
+          <label>Comercio</label>
+          <input type="text" [(ngModel)]="nuevoGasto.comercio" placeholder="Ej: Zara, Shell...">
+        </div>
+        <div class="input-field">
+          <label>Importe</label>
+          <input type="number" [(ngModel)]="nuevoGasto.cantidad" placeholder="0.00">
+        </div>
+        <div class="input-field">
+          <label>Nota</label>
+          <input type="text" [(ngModel)]="nuevoGasto.descripcion" placeholder="Opcional">
+        </div>
+        <button class="btn-save" (click)="guardarGasto()">✓ Guardar</button>
+      </div>
+    </div>
+  }
+
+  </div>

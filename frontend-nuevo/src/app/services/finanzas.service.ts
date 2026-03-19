@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Gasto, GastoFijo, Ingreso } from '../models/finanzas.model';
 
@@ -7,25 +7,28 @@ import { Gasto, GastoFijo, Ingreso } from '../models/finanzas.model';
   providedIn: 'root'
 })
 export class FinanzasService {
-  // Quitamos '/api' porque tu Controller de Java no lo tiene
   private readonly apiUrl = 'http://localhost:8080'; 
 
-  constructor(private http: HttpClient) {
-    console.log('✅ FinanzasService inicializado correctamente');
+  constructor(private http: HttpClient) {}
+
+  getIngresos(year: number, month: number): Observable<Ingreso[]> {
+    const params = new HttpParams().set('year', year.toString()).set('month', month.toString());
+    return this.http.get<Ingreso[]>(`${this.apiUrl}/ingresos/mes`, { params });
   }
 
-  // Ahora esto llamará a http://localhost:8080/ingresos
-  getIngresos(): Observable<Ingreso[]> {
-    return this.http.get<Ingreso[]>(`${this.apiUrl}/ingresos`);
+  getGastosFijos(year: number, month: number): Observable<GastoFijo[]> {
+    const params = new HttpParams().set('year', year.toString()).set('month', month.toString());
+    return this.http.get<GastoFijo[]>(`${this.apiUrl}/gastosfijos/mes`, { params });
   }
 
-  // Asegúrate de que en Java tus otros Controllers también 
-  // coincidan (ej: @RequestMapping("/gastos"))
-  getGastosFijos(): Observable<GastoFijo[]> {
-    return this.http.get<GastoFijo[]>(`${this.apiUrl}/gastosfijos`);
+  getGastos(year: number, month: number): Observable<Gasto[]> {
+    const params = new HttpParams().set('year', year.toString()).set('month', month.toString());
+    return this.http.get<Gasto[]>(`${this.apiUrl}/gastos/mes`, { params });
   }
 
-  getGastos(): Observable<Gasto[]> {
-    return this.http.get<Gasto[]>(`${this.apiUrl}/gastos`);
+  // Añade esto justo antes de la última llave }
+  guardarGasto(gasto: Gasto): Observable<Gasto> {
+    return this.http.post<Gasto>(`${this.apiUrl}/gastos`, gasto);
   }
+
 }

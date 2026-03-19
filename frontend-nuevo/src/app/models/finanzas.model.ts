@@ -23,9 +23,9 @@ export interface Ingreso {
   export interface Gasto {
     id?: number;
     fechaGasto: string;
+    fechaRegistro?: string; // 👈 Añade el '?' para que sea opcional
     mesContabilizacion: string;
-    fechaRegistro: string;
     comercio: string;
     cantidad: number;
-    descripcion?: string;
+    descripcion: string;
   }

@@ -1,19 +1,47 @@
-<div class="card">
-    <h3>📅 Gastos Fijos (Mensuales)</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Cantidad</th>
-          <th>Mes</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of listaFijos()">
-          <td>{{ item.nombre }}</td>
-          <td>{{ item.cantidad }} €</td>
-          <td>{{ item.mesContabilizacion }}</td>
-        </tr>
-      </tbody>
-    </table>
+<div class="fijos-container">
+  <div class="header-fijos">
+    <h2>🏠 Gastos Fijos y Recurrentes</h2>
+    
+    <div class="filter-group">
+      <select [(ngModel)]="mesSeleccionado" (change)="onFechaChange()">
+        <option [value]="1">Enero</option>
+        <option [value]="2">Febrero</option>
+        <option [value]="3">Marzo</option>
+        <option [value]="4">Abril</option>
+        <option [value]="5">Mayo</option>
+        <option [value]="6">Junio</option>
+        <option [value]="7">Julio</option>
+        <option [value]="8">Agosto</option>
+        <option [value]="9">Septiembre</option>
+        <option [value]="10">Octubre</option>
+        <option [value]="11">Noviembre</option>
+        <option [value]="12">Diciembre</option>
+      </select>
+
+      <select [(ngModel)]="anioSeleccionado" (change)="onFechaChange()">
+        <option [value]="2025">2025</option>
+        <option [value]="2026">2026</option>
+      </select>
+    </div>
   </div>
+
+  <div class="fijos-grid">
+    @for (fijo of listaFijos(); track fijo.id) {
+      <div class="fijo-card">
+        <div class="card-icon">🏠</div>
+        <div class="card-info">
+          <h3>{{ fijo.nombre }}</h3>
+          <p class="description">{{ fijo.descripcion || 'Sin descripción' }}</p>
+          <div class="card-footer">
+            <span class="amount">{{ fijo.cantidad | currency:'EUR' }}</span>
+            <span class="status-tag">Mensual</span>
+          </div>
+        </div>
+      </div>
+    } @empty {
+      <div class="empty-state">
+        <p>No se han encontrado gastos fijos para este periodo.</p>
+      </div>
+    }
+  </div>
+</div>
