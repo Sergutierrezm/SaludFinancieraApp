@@ -1,23 +1,18 @@
 <div class="fijos-container">
-  <div class="header-fijos">
-    <h2>🏠 Gastos Fijos y Recurrentes</h2>
+  <div class="header-actions">
+    <div class="title-section">
+      <h2>🏠 Gastos Fijos</h2>
+      <button class="btn-toggle-red" (click)="mostrarFormulario.set(!mostrarFormulario())">
+        {{ mostrarFormulario() ? '✕ Cancelar' : '+ Añadir Gasto Fijo' }}
+      </button>
+    </div>
     
-    <div class="filter-group">
+    <div class="filters">
       <select [(ngModel)]="mesSeleccionado" (change)="onFechaChange()">
         <option [value]="1">Enero</option>
         <option [value]="2">Febrero</option>
         <option [value]="3">Marzo</option>
-        <option [value]="4">Abril</option>
-        <option [value]="5">Mayo</option>
-        <option [value]="6">Junio</option>
-        <option [value]="7">Julio</option>
-        <option [value]="8">Agosto</option>
-        <option [value]="9">Septiembre</option>
-        <option [value]="10">Octubre</option>
-        <option [value]="11">Noviembre</option>
-        <option [value]="12">Diciembre</option>
-      </select>
-
+        </select>
       <select [(ngModel)]="anioSeleccionado" (change)="onFechaChange()">
         <option [value]="2025">2025</option>
         <option [value]="2026">2026</option>
@@ -25,23 +20,46 @@
     </div>
   </div>
 
-  <div class="fijos-grid">
-    @for (fijo of listaFijos(); track fijo.id) {
-      <div class="fijo-card">
-        <div class="card-icon">🏠</div>
-        <div class="card-info">
-          <h3>{{ fijo.nombre }}</h3>
-          <p class="description">{{ fijo.descripcion || 'Sin descripción' }}</p>
-          <div class="card-footer">
-            <span class="amount">{{ fijo.cantidad | currency:'EUR' }}</span>
-            <span class="status-tag">Mensual</span>
-          </div>
+  @if (mostrarFormulario()) {
+    <div class="form-card-red animate-in">
+      <div class="form-grid">
+        <div class="input-group">
+          <label>Nombre (Concepto)</label>
+          <input type="text" [(ngModel)]="nuevoFijo.nombre" placeholder="Ej: Alquiler, Gym...">
         </div>
+        <div class="input-group">
+          <label>Importe Mensual</label>
+          <input type="number" [(ngModel)]="nuevoFijo.cantidad" placeholder="0.00">
+        </div>
+        <div class="input-group">
+          <label>Fecha de Inicio</label>
+          <input type="date" [(ngModel)]="nuevoFijo.fechaInicio">
+        </div>
+        <button class="btn-save-red" (click)="guardarFijo()">✓ Guardar</button>
       </div>
-    } @empty {
-      <div class="empty-state">
-        <p>No se han encontrado gastos fijos para este periodo.</p>
-      </div>
-    }
+    </div>
+  }
+
+  <div class="card">
+    <table class="modern-table">
+      <thead>
+        <tr>
+          <th>Concepto</th>
+          <th>Fecha Inicio</th>
+          <th class="text-right">Cantidad</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of listaFijos(); track item.id) {
+          <tr>
+            <td><strong>{{ item.nombre }}</strong></td>
+            <td>{{ item.fechaInicio }}</td>
+            <td class="text-right text-red">-{{ item.cantidad | currency:'EUR' }}</td>
+          </tr>
+        } @empty {
+          <tr><td colspan="3" class="empty-msg">No hay gastos fijos este mes.</td></tr>
+        }
+      </tbody>
+    </table>
   </div>
 </div>

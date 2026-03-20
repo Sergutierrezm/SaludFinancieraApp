@@ -1,3 +1,32 @@
+<div class="dashboard-header">
+  <div class="welcome-section">
+    <h1>Resumen Financiero</h1>
+    <h2 class="current-period">Visualizando: {{ nombreMesActual() }} {{ anioSeleccionado() }}</h2>
+  </div>
+
+  <div class="global-filters">
+    <div class="select-wrapper">
+      <label>Mes</label>
+      <select [(ngModel)]="mesSeleccionado" (change)="onFechaChange()">
+        @for (m of meses; track m.id) {
+          <option [value]="m.id">{{ m.nombre }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="select-wrapper">
+      <label>Año</label>
+      <select [(ngModel)]="anioSeleccionado" (change)="onFechaChange()">
+        @for (a of anios; track a) {
+          <option [value]="a">{{ a }}</option>
+        }
+      </select>
+    </div>
+  </div>
+</div>
+
+<hr class="separator">
+
 <div class="top-management-grid">
     
   <div class="management-card income-section">
@@ -8,14 +37,14 @@
     <div class="mini-list">
       @for (ingreso of listaIngresos(); track $index) {
         <div class="list-item">
-          <span>{{ ingreso.descripcion }}</span>
+          <span>{{ ingreso.origen || ingreso.descripcion }}</span>
           <span class="amount-pos">+{{ ingreso.cantidad | currency:'EUR' }}</span>
         </div>
       } @empty {
-        <p class="empty-text">No hay ingresos.</p>
+        <p class="empty-text">No hay ingresos en {{ nombreMesActual() }}.</p>
       }
     </div>
-    <button class="btn-add">+ Añadir Ingreso</button>
+    <button class="btn-add" (click)="irAIngresos()">+ Gestionar Ingresos</button>
   </div>
 
   <div class="management-card variable-expenses-section">
@@ -32,10 +61,10 @@
           </div>
         }
       } @empty {
-        <p class="empty-text">No hay gastos variables.</p>
+        <p class="empty-text">Sin gastos variables.</p>
       }
     </div>
-    <button class="btn-add-var" (click)="irAGastos()">+ Añadir Gasto</button>
+    <button class="btn-add-var" (click)="irAGastos()">+ Gestionar Gastos</button>
   </div>
 
   <div class="management-card fixed-expenses-section">
@@ -52,10 +81,10 @@
           </div>
         }
       } @empty {
-        <p class="empty-text">No hay gastos fijos.</p>
+        <p class="empty-text">Sin gastos fijos.</p>
       }
     </div>
-    <button class="btn-add">+ Añadir Gasto Fijo</button>
+    <button class="btn-add" (click)="irAFijos()">+ Gestionar Fijos</button>
   </div>
 
 </div>

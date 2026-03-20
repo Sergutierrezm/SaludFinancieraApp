@@ -42,6 +42,16 @@ export class DashboardComponent implements OnInit {
   // 🆕 Función para que el HTML sepa cuánto sumar en la tarjeta de variables
   totalGastosVariables = computed(() => this.totalGastosVar());
 
+// 🆕 Signal computado para el título dinámico del Dashboard
+nombreMesActual = computed(() => {
+  const mesId = Number(this.mesSeleccionado());
+  // Restamos 1 porque el array empieza en 0 (Enero es la posición 0)
+  if (mesId >= 1 && mesId <= 12) {
+    return this.meses[mesId - 1].nombre;
+  }
+  return 'Mes desconocido';
+});
+
   constructor(
     private finanzasService: FinanzasService,
     private router: Router // 🆕 Inyecta el Router aquí

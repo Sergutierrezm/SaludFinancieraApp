@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, computed } from '@angular/core'; // 🆕 Importamos computed
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; 
 import { FinanzasService } from '../../services/finanzas.service';
@@ -15,10 +15,21 @@ export class GastosComponent implements OnInit {
   
   public listaGastos = signal<Gasto[]>([]);
   
+  // --- CONTROL DE FECHA ---
   anioSeleccionado = signal(new Date().getFullYear());
   mesSeleccionado = signal(new Date().getMonth() + 1);
 
-  // 🆕 1. Objeto para el formulario y control de visibilidad
+  // 🆕 OPTION B: Signal computado para el nombre del mes
+  // Se actualiza solo cuando mesSeleccionado cambia
+  nombreMesActual = computed(() => {
+    const meses = [
+      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+    return meses[this.mesSeleccionado() - 1];
+  });
+
+  // --- FORMULARIO ---
   public mostrarFormulario = signal(false);
   public nuevoGasto: Gasto = this.inicializarGasto();
 
@@ -35,13 +46,12 @@ export class GastosComponent implements OnInit {
     this.finanzasService.getGastos(anio, mes).subscribe({
       next: (datos) => {
         this.listaGastos.set(datos);
-        console.log(`Datos actualizados para: ${mes}/${anio}`);
+        console.log(`Datos actualizados para: ${this.nombreMesActual()} ${anio}`);
       },
       error: (err) => console.error('Error al conectar con el servidor:', err)
     });
   }
 
-  // 🆕 2. Función para enviar el gasto al Backend
   guardarGasto() {
     // Calculamos el mesContabilizacion automáticamente (ej: "2026-03")
     this.nuevoGasto.mesContabilizacion = this.nuevoGasto.fechaGasto.substring(0, 7);
@@ -49,18 +59,17 @@ export class GastosComponent implements OnInit {
     this.finanzasService.guardarGasto(this.nuevoGasto).subscribe({
       next: (res) => {
         console.log('✅ Gasto guardado con éxito:', res);
-        this.cargarGastos(); // Recargamos la lista para ver el nuevo gasto
-        this.nuevoGasto = this.inicializarGasto(); // Limpiamos los campos
-        this.mostrarFormulario.set(false); // Cerramos el panel
+        this.cargarGastos(); 
+        this.nuevoGasto = this.inicializarGasto(); 
+        this.mostrarFormulario.set(false); 
       },
       error: (err: any) => console.error('Error al guardar:', err)
     });
   }
 
-  // 🆕 3. Función auxiliar para resetear el objeto
   private inicializarGasto(): Gasto {
     return {
-      fechaGasto: new Date().toISOString().split('T')[0], // Fecha de hoy
+      fechaGasto: new Date().toISOString().split('T')[0],
       mesContabilizacion: '',
       comercio: '',
       cantidad: 0,

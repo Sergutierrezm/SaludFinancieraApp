@@ -1,0 +1,49 @@
+.ingresos-container {
+    padding: 20px;
+  }
+  
+  .header-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+  }
+  
+  .btn-toggle-green {
+    background-color: #10b981;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  
+  .form-card {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+  }
+  
+  .form-grid {
+    display: flex;
+    gap: 15px;
+    align-items: flex-end;
+  }
+  
+  .btn-save-green {
+    background-color: #059669;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  
+  .amount-pos {
+    color: #059669;
+    font-weight: 800;
+  }

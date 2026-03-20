@@ -31,4 +31,15 @@ export class FinanzasService {
     return this.http.post<Gasto>(`${this.apiUrl}/gastos`, gasto);
   }
 
+  // Nuevo método para enviar ingresos al Backend (Java)
+guardarIngreso(ingreso: Ingreso): Observable<Ingreso> {
+  return this.http.post<Ingreso>(`${this.apiUrl}/ingresos`, ingreso);
+}
+
+// Nuevo método para enviar Gastos Fijos al Backend
+guardarGastoFijo(gastoFijo: GastoFijo): Observable<GastoFijo> {
+  // Asegúrate de que el endpoint coincide con el @RequestMapping de tu Backend
+  return this.http.post<GastoFijo>(`${this.apiUrl}/gastosfijos`, gastoFijo);
+}
+
 }

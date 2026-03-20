@@ -1,0 +1,73 @@
+<div class="ingresos-container">
+    <div class="header-actions">
+      <div class="title-section">
+        <h2>💰 Mis Ingresos</h2>
+        <button class="btn-toggle-green" (click)="mostrarFormulario.set(!mostrarFormulario())">
+          {{ mostrarFormulario() ? '✕ Cancelar' : '+ Añadir Ingreso' }}
+        </button>
+      </div>
+  
+      <div class="filters">
+        <select [(ngModel)]="mesSeleccionado" (change)="onFechaChange()">
+          <option [value]="1">Enero</option>
+          <option [value]="2">Febrero</option>
+          <option [value]="3">Marzo</option>
+          </select>
+        <select [(ngModel)]="anioSeleccionado" (change)="onFechaChange()">
+          <option [value]="2025">2025</option>
+          <option [value]="2026">2026</option>
+        </select>
+      </div>
+    </div>
+  
+    @if (mostrarFormulario()) {
+      <div class="form-card animate-in">
+        <div class="form-grid">
+          <div class="input-group">
+            <label>Fecha de Ingreso</label>
+            <input type="date" [(ngModel)]="nuevoIngreso.fechaIngreso">
+          </div>
+          <div class="input-group">
+            <label>Origen (Pagador)</label>
+            <input type="text" [(ngModel)]="nuevoIngreso.origen" placeholder="Ej: Nómina, Freelance...">
+          </div>
+          <div class="input-group">
+            <label>Cantidad (€)</label>
+            <input type="number" [(ngModel)]="nuevoIngreso.cantidad" placeholder="0.00">
+          </div>
+          <div class="input-group">
+            <label>Descripción (Opcional)</label>
+            <input type="text" [(ngModel)]="nuevoIngreso.descripcion" placeholder="Notas extra...">
+          </div>
+          <button class="btn-save-green" (click)="guardarIngreso()">✓ Registrar</button>
+        </div>
+      </div>
+    }
+  
+    <div class="table-card">
+      <table class="modern-table">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Origen</th>
+            <th>Descripción</th>
+            <th class="text-right">Cantidad</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (ingreso of listaIngresos(); track ingreso.id) {
+            <tr>
+              <td>{{ ingreso.fechaIngreso }}</td>
+              <td><strong>{{ ingreso.origen }}</strong></td>
+              <td>{{ ingreso.descripcion || '-' }}</td>
+              <td class="text-right amount-pos">+{{ ingreso.cantidad | currency:'EUR' }}</td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="4" class="empty-msg">No hay ingresos para este periodo.</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>

@@ -1,52 +1,54 @@
 <div class="gastos-container">
-  <div class="header-actions">
+  
+  <div class="header-main">
     <div class="title-group">
-      <h2>Listado de Gastos Variables</h2>
-      <button class="btn-nuevo-gasto" (click)="mostrarFormulario.set(!mostrarFormulario())">
-        @if (!mostrarFormulario()) {
-          <span>+ Nuevo Gasto</span>
-        } @else {
-          <span>✕ Cancelar</span>
-        }
-      </button>
+      <h1>🛒 Gastos Variables</h1>
+      <h2 class="subtitle">Periodo: {{ nombreMesActual() }} {{ anioSeleccionado() }}</h2>
     </div>
     
-    <div class="date-filters">
-      <select [(ngModel)]="mesSeleccionado" (change)="onFechaChange()">
+    <div class="actions">
+      <button class="btn-toggle-orange" (click)="mostrarFormulario.set(!mostrarFormulario())">
+        {{ mostrarFormulario() ? '✕ Cancelar' : '+ Registrar Gasto' }}
+      </button>
+    </div>
+  </div>
+
+  <div class="period-selector-bar">
+    <span class="label">Cambiar mes:</span>
+    <div class="controls">
+      <select [(ngModel)]="mesSeleccionado" (change)="onFechaChange()" class="modern-select">
         <option [value]="1">Enero</option>
         <option [value]="2">Febrero</option>
         <option [value]="3">Marzo</option>
-        </select>
+        <option [value]="4">Abril</option>
+        <option [value]="5">Mayo</option>
+        <option [value]="6">Junio</option>
+        <option [value]="7">Julio</option>
+        <option [value]="8">Agosto</option>
+        <option [value]="9">Septiembre</option>
+        <option [value]="10">Octubre</option>
+        <option [value]="11">Noviembre</option>
+        <option [value]="12">Diciembre</option>
+      </select>
 
-      <select [(ngModel)]="anioSeleccionado" (change)="onFechaChange()">
+      <select [(ngModel)]="anioSeleccionado" (change)="onFechaChange()" class="modern-select">
+        <option [value]="2024">2024</option>
         <option [value]="2025">2025</option>
         <option [value]="2026">2026</option>
       </select>
     </div>
   </div>
 
-  @if (mostrarFormulario()) {
-    <div class="form-card animate-in">
-      <div class="form-grid">
-        <div class="input-field">
-          <label>Fecha</label>
-          <input type="date" [(ngModel)]="nuevoGasto.fechaGasto">
-        </div>
-        <div class="input-field">
-          <label>Comercio</label>
-          <input type="text" [(ngModel)]="nuevoGasto.comercio" placeholder="Ej: Zara, Shell...">
-        </div>
-        <div class="input-field">
-          <label>Importe</label>
-          <input type="number" [(ngModel)]="nuevoGasto.cantidad" placeholder="0.00">
-        </div>
-        <div class="input-field">
-          <label>Nota</label>
-          <input type="text" [(ngModel)]="nuevoGasto.descripcion" placeholder="Opcional">
-        </div>
-        <button class="btn-save" (click)="guardarGasto()">✓ Guardar</button>
-      </div>
-    </div>
-  }
-
+  <div class="card-table">
+    <table class="modern-table">
+      <tbody>
+        @for (gasto of listaGastos(); track gasto.id) {
+          } @empty {
+          <tr>
+            <td colspan="4" class="empty-msg">No hay gastos variables registrados en {{ nombreMesActual() }}.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
   </div>
+</div>

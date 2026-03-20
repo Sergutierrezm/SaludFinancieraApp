@@ -1,71 +1,45 @@
-.title-group {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-  }
-  
-  .btn-nuevo-gasto {
-    background-color: #4f46e5; /* Color violeta/indigo */
-    color: white;
-    border: none;
-    padding: 10px 18px;
-    border-radius: 8px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
-  }
-  
-  .btn-nuevo-gasto:hover {
-    background-color: #4338ca;
-    transform: translateY(-1px);
-    box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
-  }
-  
-  /* Para el formulario */
-  .form-card {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    padding: 20px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-  }
-  
-  .form-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    align-items: flex-end;
-  }
-  
-  .input-field {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    flex: 1;
-    min-width: 150px;
-  }
-  
-  .input-field label {
-    font-size: 12px;
-    font-weight: 700;
-    color: #64748b;
-    text-transform: uppercase;
-  }
-  
-  .input-field input {
-    padding: 8px 12px;
-    border: 1px solid #cbd5e1;
-    border-radius: 6px;
-  }
-  
-  .btn-save {
-    background-color: #10b981; /* Verde éxito */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 6px;
-    font-weight: 700;
-    cursor: pointer;
-  }
+.header-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  color: #ea580c; /* Naranja para gastos */
+  font-size: 1.4rem;
+  margin-top: -5px;
+}
+
+.period-selector-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff7ed;
+  padding: 8px 18px;
+  border-radius: 30px;
+  border: 1px solid #ffedd5;
+  margin-bottom: 25px;
+}
+
+.label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #9a3412;
+  text-transform: uppercase;
+}
+
+.modern-select {
+  border: none;
+  background: transparent;
+  font-weight: 700;
+  color: #ea580c;
+  cursor: pointer;
+  font-size: 1rem;
+  outline: none;
+}
+
+/* Estilos de botones específicos para Gastos */
+.btn-toggle-orange { background: #ea580c; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+.btn-save-orange { background: #c2410c; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+.amount-neg { color: #dc2626; font-weight: bold; }

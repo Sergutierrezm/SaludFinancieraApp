@@ -141,3 +141,90 @@
 .text-red { color: #dc2626; }
 .text-right { text-align: right; }
 .empty-text { color: #94a3b8; font-style: italic; text-align: center; margin-top: 20px; }
+
+
+/* --- NUEVA CABECERA DINÁMICA --- */
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end; /* Alinea el título y los filtros por abajo */
+  margin-bottom: 30px;
+  padding: 0 10px;
+}
+
+.welcome-section h1 {
+  font-size: 1.8rem;
+  color: #0f172a;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.current-period {
+  font-size: 1.1rem;
+  color: #64748b; /* Gris suave */
+  margin: 5px 0 0 0;
+  font-weight: 500;
+}
+
+.current-period strong {
+  color: #2563eb; /* Azul para resaltar el mes */
+  font-weight: 700;
+}
+
+/* CONTENEDOR DE FILTROS */
+.global-filters {
+  display: flex;
+  gap: 12px;
+  background: #f8fafc;
+  padding: 12px 20px;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+}
+
+.select-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.select-wrapper label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.select-wrapper select {
+  border: none;
+  background: transparent;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1e293b;
+  cursor: pointer;
+  outline: none;
+  padding-right: 10px;
+}
+
+/* LÍNEA SEPARADORA SUTIL */
+.separator {
+  border: 0;
+  height: 1px;
+  background: linear-gradient(to right, #e2e8f0, transparent);
+  margin-bottom: 35px;
+}
+
+/* --- AJUSTES EXTRA PARA RESPONSIVE --- */
+@media (max-width: 768px) {
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  
+  .top-management-grid {
+    grid-template-columns: 1fr; /* Una tarjeta por fila en móvil */
+  }
+}
