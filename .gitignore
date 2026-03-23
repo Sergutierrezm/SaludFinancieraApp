@@ -36,4 +36,7 @@ build/
 .vscode/
 
 ### Mac OS ###
-.DS_Store
+.DS_Store.idea/
+target/
+backend/target/
+node_modules/
