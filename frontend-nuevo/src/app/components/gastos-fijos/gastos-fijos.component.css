@@ -1,27 +1,72 @@
-.btn-toggle-red {
-  background-color: #ef4444;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
+.fijos-page-container {
+  padding: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Inter', sans-serif;
 }
 
-.form-card-red {
-  background: #fff5f5;
-  border: 1px solid #feb2b2;
-  padding: 20px;
-  border-radius: 12px;
-  margin-bottom: 25px;
+/* HEADER */
+.page-header { margin-bottom: 30px; }
+.btn-back {
+  background: none; border: none; color: #64748b; font-weight: 600;
+  cursor: pointer; display: flex; align-items: center; gap: 8px;
+  padding: 8px 0; font-size: 0.95rem; transition: 0.2s;
+}
+.btn-back:hover { color: #1e293b; transform: translateX(-5px); }
+.title-block h1 { font-size: 2rem; color: #0f172a; margin: 10px 0 5px 0; }
+.subtitle { color: #64748b; font-size: 1.1rem; }
+.subtitle strong { color: #dc2626; }
+
+/* LAYOUT */
+.main-split-layout {
+  display: grid;
+  grid-template-columns: 450px 1fr;
+  gap: 40px;
+  align-items: start;
 }
 
-.btn-save-red {
-  background-color: #c53030;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  font-weight: bold;
-  cursor: pointer;
+/* FORMULARIO (ROJO) */
+.card-form-red {
+  background: white; border-radius: 20px; padding: 30px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  border: 1px solid #e2e8f0; border-top: 6px solid #dc2626;
+}
+.card-header-form h3 { margin: 0; color: #1e293b; }
+.card-header-form p { color: #94a3b8; font-size: 0.9rem; margin-top: 5px; }
+
+.form-body { margin-top: 25px; display: flex; flex-direction: column; gap: 20px; }
+.input-group label { display: block; font-size: 0.85rem; font-weight: 700; color: #475569; margin-bottom: 8px; }
+.input-group input, .input-group textarea {
+  width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px;
+  font-size: 1rem; transition: border 0.2s;
+}
+.input-group input:focus { border-color: #dc2626; outline: none; }
+.input-amount-red { font-weight: 700; color: #dc2626; font-size: 1.2rem !important; }
+
+.btn-submit-red {
+  background: #dc2626; color: white; border: none; padding: 16px;
+  border-radius: 12px; font-weight: 800; font-size: 1rem;
+  cursor: pointer; margin-top: 10px; transition: 0.3s;
+}
+.btn-submit-red:hover { background: #b91c1c; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3); }
+
+/* HISTORIAL COMPACTO */
+.history-panel { background: #fff5f5; padding: 25px; border-radius: 20px; border: 1px solid #fee2e2; }
+.history-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.history-header h3 { font-size: 1.1rem; color: #1e293b; margin: 0; }
+
+.mini-card-item-red {
+  background: white; padding: 15px; border-radius: 12px; margin-bottom: 12px;
+  display: flex; justify-content: space-between; align-items: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02); border-left: 4px solid #dc2626; transition: 0.2s;
+}
+.mini-card-item-red:hover { transform: scale(1.02); }
+.date-tag { font-size: 0.75rem; color: #94a3b8; font-weight: 600; display: block; }
+.origin-text { font-weight: 600; color: #334155; }
+.amount-text-red { color: #b91c1c; font-weight: 800; font-size: 1.05rem; }
+
+.empty-state { text-align: center; padding: 40px; color: #94a3b8; font-style: italic; }
+
+@media (max-width: 1000px) {
+  .main-split-layout { grid-template-columns: 1fr; }
 }

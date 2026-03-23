@@ -1,6 +1,7 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router'; // 🆕 Importado
 import { FinanzasService } from '../../services/finanzas.service';
 import { GastoFijo } from '../../models/finanzas.model';
 
@@ -12,17 +13,28 @@ import { GastoFijo } from '../../models/finanzas.model';
   styleUrl: './gastos-fijos.component.css'
 })
 export class GastosFijosComponent implements OnInit {
-  public listaFijos = signal<GastoFijo[]>([]);
-  public mostrarFormulario = signal(false);
   
-  // Filtros para la tabla
+  public listaFijos = signal<GastoFijo[]>([]);
+  
+  // Control de fecha
   anioSeleccionado = signal(new Date().getFullYear());
   mesSeleccionado = signal(new Date().getMonth() + 1);
 
-  // Objeto para el formulario (usando los campos de tu DTO/Entity)
+  // Nombre del mes reactivo
+  nombreMesActual = computed(() => {
+    const meses = [
+      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+    return meses[this.mesSeleccionado() - 1] || 'Mes';
+  });
+
   public nuevoFijo: GastoFijo = this.inicializarFijo();
 
-  constructor(private finanzasService: FinanzasService) {}
+  constructor(
+    private finanzasService: FinanzasService,
+    private router: Router // 🆕 Inyectado
+  ) {}
 
   ngOnInit() {
     this.cargarFijos();
@@ -36,18 +48,18 @@ export class GastosFijosComponent implements OnInit {
   }
 
   guardarFijo() {
-    // Generamos el formato "YYYY-MM" para el YearMonth de Java
     this.nuevoFijo.mesContabilizacion = this.nuevoFijo.fechaInicio.substring(0, 7);
-
     this.finanzasService.guardarGastoFijo(this.nuevoFijo).subscribe({
       next: (res) => {
-        console.log('✅ Gasto fijo guardado:', res);
-        this.cargarFijos(); // Refrescar lista
-        this.nuevoFijo = this.inicializarFijo(); // Resetear campos
-        this.mostrarFormulario.set(false); // Cerrar formulario
+        this.cargarFijos();
+        this.nuevoFijo = this.inicializarFijo();
       },
       error: (err) => console.error('Error al guardar gasto fijo:', err)
     });
+  }
+
+  volver() {
+    this.router.navigate(['/dashboard']);
   }
 
   private inicializarFijo(): GastoFijo {

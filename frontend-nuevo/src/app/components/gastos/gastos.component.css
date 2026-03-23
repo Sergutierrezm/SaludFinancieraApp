@@ -1,45 +1,72 @@
-.header-main {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 10px;
+.gastos-page-container {
+  padding: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Inter', sans-serif;
 }
 
-.subtitle {
-  color: #ea580c; /* Naranja para gastos */
-  font-size: 1.4rem;
-  margin-top: -5px;
+/* HEADER */
+.page-header { margin-bottom: 30px; }
+.btn-back {
+  background: none; border: none; color: #64748b; font-weight: 600;
+  cursor: pointer; display: flex; align-items: center; gap: 8px;
+  padding: 8px 0; font-size: 0.95rem; transition: 0.2s;
+}
+.btn-back:hover { color: #1e293b; transform: translateX(-5px); }
+.title-block h1 { font-size: 2rem; color: #0f172a; margin: 10px 0 5px 0; }
+.subtitle { color: #64748b; font-size: 1.1rem; }
+.subtitle strong { color: #ea580c; }
+
+/* LAYOUT */
+.main-split-layout {
+  display: grid;
+  grid-template-columns: 450px 1fr;
+  gap: 40px;
+  align-items: start;
 }
 
-.period-selector-bar {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  background: #fff7ed;
-  padding: 8px 18px;
-  border-radius: 30px;
-  border: 1px solid #ffedd5;
-  margin-bottom: 25px;
+/* FORMULARIO (NARANJA) */
+.card-form-orange {
+  background: white; border-radius: 20px; padding: 30px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  border: 1px solid #e2e8f0; border-top: 6px solid #f97316;
 }
+.card-header-form h3 { margin: 0; color: #1e293b; }
+.card-header-form p { color: #94a3b8; font-size: 0.9rem; margin-top: 5px; }
 
-.label {
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: #9a3412;
-  text-transform: uppercase;
+.form-body { margin-top: 25px; display: flex; flex-direction: column; gap: 20px; }
+.input-group label { display: block; font-size: 0.85rem; font-weight: 700; color: #475569; margin-bottom: 8px; }
+.input-group input, .input-group textarea {
+  width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px;
+  font-size: 1rem; transition: border 0.2s;
 }
+.input-group input:focus { border-color: #f97316; outline: none; }
+.input-amount { font-weight: 700; color: #ea580c; font-size: 1.2rem !important; }
 
-.modern-select {
-  border: none;
-  background: transparent;
-  font-weight: 700;
-  color: #ea580c;
-  cursor: pointer;
-  font-size: 1rem;
-  outline: none;
+.btn-submit-orange {
+  background: #f97316; color: white; border: none; padding: 16px;
+  border-radius: 12px; font-weight: 800; font-size: 1rem;
+  cursor: pointer; margin-top: 10px; transition: 0.3s;
 }
+.btn-submit-orange:hover { background: #ea580c; box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3); }
 
-/* Estilos de botones específicos para Gastos */
-.btn-toggle-orange { background: #ea580c; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; }
-.btn-save-orange { background: #c2410c; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; }
-.amount-neg { color: #dc2626; font-weight: bold; }
+/* HISTORIAL COMPACTO */
+.history-panel { background: #fffaf5; padding: 25px; border-radius: 20px; border: 1px solid #ffedd5; }
+.history-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.history-header h3 { font-size: 1.1rem; color: #1e293b; margin: 0; }
+
+.mini-card-item-orange {
+  background: white; padding: 15px; border-radius: 12px; margin-bottom: 12px;
+  display: flex; justify-content: space-between; align-items: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02); border-left: 4px solid #f97316; transition: 0.2s;
+}
+.mini-card-item-orange:hover { transform: scale(1.02); }
+.date-tag { font-size: 0.75rem; color: #94a3b8; font-weight: 600; display: block; }
+.origin-text { font-weight: 600; color: #334155; }
+.amount-text-neg { color: #dc2626; font-weight: 800; font-size: 1.05rem; }
+
+.empty-state { text-align: center; padding: 40px; color: #94a3b8; font-style: italic; }
+
+@media (max-width: 1000px) {
+  .main-split-layout { grid-template-columns: 1fr; }
+}

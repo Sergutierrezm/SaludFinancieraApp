@@ -1,65 +1,80 @@
-<div class="fijos-container">
-  <div class="header-actions">
-    <div class="title-section">
-      <h2>🏠 Gastos Fijos</h2>
-      <button class="btn-toggle-red" (click)="mostrarFormulario.set(!mostrarFormulario())">
-        {{ mostrarFormulario() ? '✕ Cancelar' : '+ Añadir Gasto Fijo' }}
-      </button>
+<div class="fijos-page-container">
+  
+  <header class="page-header">
+    <button class="btn-back" (click)="volver()">
+      <span class="icon">←</span> Volver al Dashboard
+    </button>
+    <div class="title-block">
+      <h1>🏠 Gastos Fijos</h1>
+      <p class="subtitle">Gestionando compromisos de: <strong>{{ nombreMesActual() }} {{ anioSeleccionado() }}</strong></p>
     </div>
+  </header>
+
+  <div class="main-split-layout">
     
-    <div class="filters">
-      <select [(ngModel)]="mesSeleccionado" (change)="onFechaChange()">
-        <option [value]="1">Enero</option>
-        <option [value]="2">Febrero</option>
-        <option [value]="3">Marzo</option>
-        </select>
-      <select [(ngModel)]="anioSeleccionado" (change)="onFechaChange()">
-        <option [value]="2025">2025</option>
-        <option [value]="2026">2026</option>
-      </select>
-    </div>
-  </div>
+    <section class="action-panel">
+      <div class="card-form-red">
+        <div class="card-header-form">
+          <h3>Nuevo Gasto Fijo</h3>
+          <p>Añade alquileres, suscripciones o facturas recurrentes.</p>
+        </div>
+        
+        <div class="form-body">
+          <div class="input-group">
+            <label>Concepto / Nombre</label>
+            <input type="text" [(ngModel)]="nuevoFijo.nombre" placeholder="Ej: Alquiler, Netflix, Internet...">
+          </div>
 
-  @if (mostrarFormulario()) {
-    <div class="form-card-red animate-in">
-      <div class="form-grid">
-        <div class="input-group">
-          <label>Nombre (Concepto)</label>
-          <input type="text" [(ngModel)]="nuevoFijo.nombre" placeholder="Ej: Alquiler, Gym...">
+          <div class="input-group">
+            <label>Importe Mensual (€)</label>
+            <input type="number" [(ngModel)]="nuevoFijo.cantidad" class="input-amount-red" placeholder="0.00">
+          </div>
+
+          <div class="input-group">
+            <label>Fecha de Inicio / Cargo</label>
+            <input type="date" [(ngModel)]="nuevoFijo.fechaInicio">
+          </div>
+
+          <div class="input-group">
+            <label>Notas (Opcional)</label>
+            <textarea [(ngModel)]="nuevoFijo.descripcion" rows="3" placeholder="Detalles del contrato..."></textarea>
+          </div>
+
+          <button class="btn-submit-red" (click)="guardarFijo()">
+            Registrar Gasto Fijo
+          </button>
         </div>
-        <div class="input-group">
-          <label>Importe Mensual</label>
-          <input type="number" [(ngModel)]="nuevoFijo.cantidad" placeholder="0.00">
-        </div>
-        <div class="input-group">
-          <label>Fecha de Inicio</label>
-          <input type="date" [(ngModel)]="nuevoFijo.fechaInicio">
-        </div>
-        <button class="btn-save-red" (click)="guardarFijo()">✓ Guardar</button>
       </div>
-    </div>
-  }
+    </section>
 
-  <div class="card">
-    <table class="modern-table">
-      <thead>
-        <tr>
-          <th>Concepto</th>
-          <th>Fecha Inicio</th>
-          <th class="text-right">Cantidad</th>
-        </tr>
-      </thead>
-      <tbody>
+    <aside class="history-panel">
+      <div class="history-header">
+        <h3>Llevas este mes</h3>
+        <div class="month-switcher">
+          <select [(ngModel)]="mesSeleccionado" (change)="onFechaChange()">
+            <option *ngFor="let m of [1,2,3,4,5,6,7,8,9,10,11,12]" [value]="m">{{m}}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="scrollable-list">
         @for (item of listaFijos(); track item.id) {
-          <tr>
-            <td><strong>{{ item.nombre }}</strong></td>
-            <td>{{ item.fechaInicio }}</td>
-            <td class="text-right text-red">-{{ item.cantidad | currency:'EUR' }}</td>
-          </tr>
+          <div class="mini-card-item-red">
+            <div class="item-main">
+              <span class="date-tag">Desde: {{ item.fechaInicio | date:'dd/MM/yy' }}</span>
+              <span class="origin-text">{{ item.nombre }}</span>
+            </div>
+            <div class="item-side">
+              <span class="amount-text-red">-{{ item.cantidad | currency:'EUR' }}</span>
+            </div>
+          </div>
         } @empty {
-          <tr><td colspan="3" class="empty-msg">No hay gastos fijos este mes.</td></tr>
+          <div class="empty-state">
+            <p>No hay gastos fijos para {{ nombreMesActual() }}.</p>
+          </div>
         }
-      </tbody>
-    </table>
+      </div>
+    </aside>
+
   </div>
 </div>

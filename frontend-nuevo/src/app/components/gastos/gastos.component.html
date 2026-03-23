@@ -1,54 +1,80 @@
-<div class="gastos-container">
+<div class="gastos-page-container">
   
-  <div class="header-main">
-    <div class="title-group">
+  <header class="page-header">
+    <button class="btn-back" (click)="volver()">
+      <span class="icon">←</span> Volver al Dashboard
+    </button>
+    <div class="title-block">
       <h1>🛒 Gastos Variables</h1>
-      <h2 class="subtitle">Periodo: {{ nombreMesActual() }} {{ anioSeleccionado() }}</h2>
+      <p class="subtitle">Periodo: <strong>{{ nombreMesActual() }} {{ anioSeleccionado() }}</strong></p>
     </div>
+  </header>
+
+  <div class="main-split-layout">
     
-    <div class="actions">
-      <button class="btn-toggle-orange" (click)="mostrarFormulario.set(!mostrarFormulario())">
-        {{ mostrarFormulario() ? '✕ Cancelar' : '+ Registrar Gasto' }}
-      </button>
-    </div>
-  </div>
+    <section class="action-panel">
+      <div class="card-form-orange">
+        <div class="card-header-form">
+          <h3>Nuevo Gasto</h3>
+          <p>Registra tus compras y consumos del día.</p>
+        </div>
+        
+        <div class="form-body">
+          <div class="input-group">
+            <label>Fecha</label>
+            <input type="date" [(ngModel)]="nuevoGasto.fechaGasto">
+          </div>
 
-  <div class="period-selector-bar">
-    <span class="label">Cambiar mes:</span>
-    <div class="controls">
-      <select [(ngModel)]="mesSeleccionado" (change)="onFechaChange()" class="modern-select">
-        <option [value]="1">Enero</option>
-        <option [value]="2">Febrero</option>
-        <option [value]="3">Marzo</option>
-        <option [value]="4">Abril</option>
-        <option [value]="5">Mayo</option>
-        <option [value]="6">Junio</option>
-        <option [value]="7">Julio</option>
-        <option [value]="8">Agosto</option>
-        <option [value]="9">Septiembre</option>
-        <option [value]="10">Octubre</option>
-        <option [value]="11">Noviembre</option>
-        <option [value]="12">Diciembre</option>
-      </select>
+          <div class="input-group">
+            <label>Comercio / Lugar</label>
+            <input type="text" [(ngModel)]="nuevoGasto.comercio" placeholder="Ej: Mercadona, Gasolinera, Amazon...">
+          </div>
 
-      <select [(ngModel)]="anioSeleccionado" (change)="onFechaChange()" class="modern-select">
-        <option [value]="2024">2024</option>
-        <option [value]="2025">2025</option>
-        <option [value]="2026">2026</option>
-      </select>
-    </div>
-  </div>
+          <div class="input-group">
+            <label>Importe (€)</label>
+            <input type="number" [(ngModel)]="nuevoGasto.cantidad" class="input-amount" placeholder="0.00">
+          </div>
 
-  <div class="card-table">
-    <table class="modern-table">
-      <tbody>
+          <div class="input-group">
+            <label>Nota / Descripción</label>
+            <textarea [(ngModel)]="nuevoGasto.descripcion" rows="3" placeholder="Opcional..."></textarea>
+          </div>
+
+          <button class="btn-submit-orange" (click)="guardarGasto()">
+            Registrar Gasto
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <aside class="history-panel">
+      <div class="history-header">
+        <h3>Lista de Gastos</h3>
+        <div class="month-switcher">
+          <select [(ngModel)]="mesSeleccionado" (change)="onFechaChange()">
+            <option *ngFor="let m of [1,2,3,4,5,6,7,8,9,10,11,12]" [value]="m">{{m}}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="scrollable-list">
         @for (gasto of listaGastos(); track gasto.id) {
-          } @empty {
-          <tr>
-            <td colspan="4" class="empty-msg">No hay gastos variables registrados en {{ nombreMesActual() }}.</td>
-          </tr>
+          <div class="mini-card-item-orange">
+            <div class="item-main">
+              <span class="date-tag">{{ gasto.fechaGasto | date:'dd/MM' }}</span>
+              <span class="origin-text">{{ gasto.comercio }}</span>
+            </div>
+            <div class="item-side">
+              <span class="amount-text-neg">-{{ gasto.cantidad | currency:'EUR' }}</span>
+            </div>
+          </div>
+        } @empty {
+          <div class="empty-state">
+            <p>No hay gastos en {{ nombreMesActual() }}.</p>
+          </div>
         }
-      </tbody>
-    </table>
+      </div>
+    </aside>
+
   </div>
 </div>

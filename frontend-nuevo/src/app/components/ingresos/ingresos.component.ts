@@ -1,6 +1,7 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router'; 
 import { FinanzasService } from '../../services/finanzas.service';
 import { Ingreso } from '../../models/finanzas.model';
 
@@ -14,15 +15,26 @@ import { Ingreso } from '../../models/finanzas.model';
 export class IngresosComponent implements OnInit {
   
   public listaIngresos = signal<Ingreso[]>([]);
-  public mostrarFormulario = signal(false);
   
-  // Filtros de fecha
+  // Control de fecha
   anioSeleccionado = signal(new Date().getFullYear());
   mesSeleccionado = signal(new Date().getMonth() + 1);
 
+  // Nombre del mes reactivo
+  nombreMesActual = computed(() => {
+    const meses = [
+      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+    return meses[this.mesSeleccionado() - 1] || 'Mes';
+  });
+
   public nuevoIngreso: Ingreso = this.inicializarIngreso();
 
-  constructor(private finanzasService: FinanzasService) {}
+  constructor(
+    private finanzasService: FinanzasService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.cargarIngresos();
@@ -36,18 +48,21 @@ export class IngresosComponent implements OnInit {
   }
 
   guardarIngreso() {
-    // Formateamos para el YearMonth de Java (YYYY-MM)
+    // Formato YYYY-MM para el backend
     this.nuevoIngreso.mesContabilizacion = this.nuevoIngreso.fechaIngreso.substring(0, 7);
 
     this.finanzasService.guardarIngreso(this.nuevoIngreso).subscribe({
       next: (res) => {
-        console.log('✅ Ingreso guardado:', res);
-        this.cargarIngresos();
-        this.nuevoIngreso = this.inicializarIngreso();
-        this.mostrarFormulario.set(false);
+        console.log('✅ Ingreso registrado');
+        this.cargarIngresos(); // Refrescar lista lateral
+        this.nuevoIngreso = this.inicializarIngreso(); // Resetear form
       },
       error: (err) => console.error('Error al guardar:', err)
     });
+  }
+
+  volver() {
+    this.router.navigate(['/dashboard']);
   }
 
   private inicializarIngreso(): Ingreso {

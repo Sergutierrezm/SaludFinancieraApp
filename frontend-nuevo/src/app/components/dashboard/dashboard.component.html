@@ -1,90 +1,116 @@
-<div class="dashboard-header">
-  <div class="welcome-section">
-    <h1>Resumen Financiero</h1>
-    <h2 class="current-period">Visualizando: {{ nombreMesActual() }} {{ anioSeleccionado() }}</h2>
-  </div>
-
-  <div class="global-filters">
-    <div class="select-wrapper">
-      <label>Mes</label>
-      <select [(ngModel)]="mesSeleccionado" (change)="onFechaChange()">
-        @for (m of meses; track m.id) {
-          <option [value]="m.id">{{ m.nombre }}</option>
-        }
-      </select>
+<div class="dashboard-container">
+  
+  <header class="dashboard-header">
+    <div class="welcome-section">
+      <h1>Resumen Financiero</h1>
+      <h2 class="current-period">Visualizando: <strong>{{ nombreMesActual() }} {{ anioSeleccionado() }}</strong></h2>
     </div>
 
-    <div class="select-wrapper">
-      <label>Año</label>
-      <select [(ngModel)]="anioSeleccionado" (change)="onFechaChange()">
-        @for (a of anios; track a) {
-          <option [value]="a">{{ a }}</option>
-        }
-      </select>
+    <div class="global-filters">
+      <div class="select-wrapper">
+        <label>Mes</label>
+        <select [(ngModel)]="mesSeleccionado" (change)="onFechaChange()">
+          @for (m of meses; track m.id) {
+            <option [value]="m.id">{{ m.nombre }}</option>
+          }
+        </select>
+      </div>
+      <div class="select-wrapper">
+        <label>Año</label>
+        <select [(ngModel)]="anioSeleccionado" (change)="onFechaChange()">
+          @for (a of anios; track a) {
+            <option [value]="a">{{ a }}</option>
+          }
+        </select>
+      </div>
     </div>
-  </div>
-</div>
+  </header>
 
-<hr class="separator">
+  <hr class="separator">
 
-<div class="top-management-grid">
-    
-  <div class="management-card income-section">
-    <div class="card-header">
-      <h3>💰 Mis Ingresos</h3>
-      <span class="total-badge">{{ totalIngresos() | currency:'EUR' }}</span>
-    </div>
-    <div class="mini-list">
-      @for (ingreso of listaIngresos(); track $index) {
-        <div class="list-item">
-          <span>{{ ingreso.origen || ingreso.descripcion }}</span>
-          <span class="amount-pos">+{{ ingreso.cantidad | currency:'EUR' }}</span>
+  <div class="balance-card" [ngClass]="{'pos-gradient': saldoNeto() >= 0, 'neg-gradient': saldoNeto() < 0}">
+    <div class="balance-content">
+      <div class="main-info">
+        <span class="label">Saldo Neto Disponible</span>
+        <h2 class="amount">{{ saldoNeto() | currency:'EUR' }}</h2>
+        <div class="saving-badge" *ngIf="saldoNeto() > 0">
+          🚀 ¡Estás ahorrando el <strong>{{ porcentajeAhorro() }}%</strong>!
         </div>
-      } @empty {
-        <p class="empty-text">No hay ingresos en {{ nombreMesActual() }}.</p>
-      }
+      </div>
+      
+      <div class="quick-stats">
+        <div class="stat-box">
+          <small>Ingresos</small>
+          <p class="val">+{{ totalIngresos() | currency:'EUR' }}</p>
+        </div>
+        <div class="divider-v"></div>
+        <div class="stat-box">
+          <small>Gastos Totales</small>
+          <p class="val">-{{ (totalGastosFijos() + totalGastosVar()) | currency:'EUR' }}</p>
+        </div>
+      </div>
     </div>
-    <button class="btn-add" (click)="irAIngresos()">+ Gestionar Ingresos</button>
   </div>
 
-  <div class="management-card variable-expenses-section">
-    <div class="card-header">
-      <h3>🛒 Gastos Variables</h3>
-      <span class="total-badge-orange">{{ totalGastosVariables() | currency:'EUR' }}</span>
-    </div>
-    <div class="mini-list">
-      @for (gasto of listaGastosDetallados(); track $index) {
-        @if (gasto.tipo === 'Variable') {
+  <div class="top-management-grid">
+    
+    <div class="management-card income-section">
+      <div class="card-header">
+        <h3>💰 Mis Ingresos</h3>
+        <span class="total-badge">{{ totalIngresos() | currency:'EUR' }}</span>
+      </div>
+      <div class="mini-list">
+        @for (ingreso of listaIngresos(); track $index) {
           <div class="list-item">
-            <span>{{ gasto.comercio || gasto.descripcion }}</span>
-            <span class="amount-neg">-{{ gasto.cantidad | currency:'EUR' }}</span>
+            <span>{{ ingreso.origen }}</span>
+            <span class="amount-pos">+{{ ingreso.cantidad | currency:'EUR' }}</span>
           </div>
+        } @empty {
+          <p class="empty-text">Sin ingresos registrados.</p>
         }
-      } @empty {
-        <p class="empty-text">Sin gastos variables.</p>
-      }
+      </div>
+      <button class="btn-add" (click)="irAIngresos()">+ Gestionar Ingresos</button>
     </div>
-    <button class="btn-add-var" (click)="irAGastos()">+ Gestionar Gastos</button>
-  </div>
 
-  <div class="management-card fixed-expenses-section">
-    <div class="card-header">
-      <h3>🏠 Gastos Fijos</h3>
-      <span class="total-badge-red">{{ totalGastosFijos() | currency:'EUR' }}</span>
-    </div>
-    <div class="mini-list">
-      @for (gasto of listaGastosDetallados(); track $index) {
-        @if (gasto.tipo === 'Fijo') {
-          <div class="list-item">
-            <span>{{ gasto.descripcion }}</span>
-            <span class="amount-neg">-{{ gasto.cantidad | currency:'EUR' }}</span>
-          </div>
+    <div class="management-card variable-expenses-section">
+      <div class="card-header">
+        <h3>🛒 Gastos Variables</h3>
+        <span class="total-badge-orange">{{ totalGastosVar() | currency:'EUR' }}</span>
+      </div>
+      <div class="mini-list">
+        @for (gasto of listaGastosDetallados(); track $index) {
+          @if (gasto.tipo === 'Variable') {
+            <div class="list-item">
+              <span>{{ gasto.comercio }}</span>
+              <span class="amount-neg">-{{ gasto.cantidad | currency:'EUR' }}</span>
+            </div>
+          }
+        } @empty {
+          <p class="empty-text">Sin gastos variables.</p>
         }
-      } @empty {
-        <p class="empty-text">Sin gastos fijos.</p>
-      }
+      </div>
+      <button class="btn-add-var" (click)="irAGastos()">+ Gestionar Gastos</button>
     </div>
-    <button class="btn-add" (click)="irAFijos()">+ Gestionar Fijos</button>
-  </div>
 
+    <div class="management-card fixed-expenses-section">
+      <div class="card-header">
+        <h3>🏠 Gastos Fijos</h3>
+        <span class="total-badge-red">{{ totalGastosFijos() | currency:'EUR' }}</span>
+      </div>
+      <div class="mini-list">
+        @for (gasto of listaGastosDetallados(); track $index) {
+          @if (gasto.tipo === 'Fijo') {
+            <div class="list-item">
+              <span>{{ gasto.nombre || gasto.descripcion }}</span>
+              <span class="amount-neg">-{{ gasto.cantidad | currency:'EUR' }}</span>
+            </div>
+          }
+        } @empty {
+          <p class="empty-text">Sin gastos fijos.</p>
+        }
+      </div>
+      <button class="btn-add" (click)="irAFijos()">+ Gestionar Fijos</button>
+    </div>
+
+  </div>
 </div>

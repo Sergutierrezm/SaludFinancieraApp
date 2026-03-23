@@ -1,7 +1,7 @@
 import { Component, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router'; // 🆕 Importa el Router
+import { Router } from '@angular/router'; 
 import { FinanzasService } from '../../services/finanzas.service';
 import { forkJoin } from 'rxjs';
 
@@ -13,7 +13,7 @@ import { forkJoin } from 'rxjs';
   styleUrl: './dashboard.component.css',
 })
 export class DashboardComponent implements OnInit {
-  // --- SIGNALS DE CONTROL ---
+  // --- CONTROL DE FECHA ---
   mesSeleccionado = signal(new Date().getMonth() + 1);
   anioSeleccionado = signal(new Date().getFullYear());
 
@@ -25,36 +25,34 @@ export class DashboardComponent implements OnInit {
   ];
   anios = [2024, 2025, 2026];
 
-  // --- SIGNALS DE DATOS ---
+  // --- DATOS DEL SERVIDOR ---
   totalIngresos = signal(0);
   totalGastosFijos = signal(0);
   totalGastosVar = signal(0);
   
   listaIngresos = signal<any[]>([]);
   listaGastosDetallados = signal<any[]>([]);
+
+  // --- CÁLCULOS AUTOMÁTICOS (SIGNALS COMPUTED) ---
   
-  today = new Date();
+  nombreMesActual = computed(() => {
+    const mesId = Number(this.mesSeleccionado());
+    return this.meses[mesId - 1]?.nombre || 'Mes desconocido';
+  });
 
   saldoNeto = computed(() => 
     this.totalIngresos() - (this.totalGastosFijos() + this.totalGastosVar())
   );
 
-  // 🆕 Función para que el HTML sepa cuánto sumar en la tarjeta de variables
-  totalGastosVariables = computed(() => this.totalGastosVar());
-
-// 🆕 Signal computado para el título dinámico del Dashboard
-nombreMesActual = computed(() => {
-  const mesId = Number(this.mesSeleccionado());
-  // Restamos 1 porque el array empieza en 0 (Enero es la posición 0)
-  if (mesId >= 1 && mesId <= 12) {
-    return this.meses[mesId - 1].nombre;
-  }
-  return 'Mes desconocido';
-});
+  porcentajeAhorro = computed(() => {
+    if (this.totalIngresos() <= 0) return 0;
+    const ahorro = this.saldoNeto();
+    return ahorro > 0 ? Math.round((ahorro / this.totalIngresos()) * 100) : 0;
+  });
 
   constructor(
     private finanzasService: FinanzasService,
-    private router: Router // 🆕 Inyecta el Router aquí
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -72,41 +70,22 @@ nombreMesActual = computed(() => {
     }).subscribe({
       next: (res) => {
         this.listaIngresos.set(res.ingresos);
-
-        // Marcamos cada gasto con su tipo para filtrarlos en el HTML
+        
         const fijosMapeados = res.fijos.map((g: any) => ({ ...g, tipo: 'Fijo' }));
         const varMapeados = res.variables.map((v: any) => ({ ...v, tipo: 'Variable' }));
-        
         this.listaGastosDetallados.set([...fijosMapeados, ...varMapeados]);
 
         this.totalIngresos.set(res.ingresos.reduce((acc: number, i: any) => acc + i.cantidad, 0));
         this.totalGastosFijos.set(res.fijos.reduce((acc: number, g: any) => acc + g.cantidad, 0));
         this.totalGastosVar.set(res.variables.reduce((acc: number, v: any) => acc + v.cantidad, 0));
       },
-      error: (err) => console.error('Error cargando datos:', err)
+      error: (err) => console.error('Error cargando dashboard:', err)
     });
   }
 
-  // 🆕 Funciones de navegación para los botones "+ Añadir"
-  irAGastos() {
-    this.router.navigate(['/gastos']); // Asegúrate que esta ruta coincide con app.routes.ts
-  }
-
-  irAIngresos() {
-    this.router.navigate(['/ingresos']);
-  }
-
-  irAFijos() {
-    this.router.navigate(['/gastos-fijos']);
-  }
-
-  onFechaChange() {
-    this.cargarDatos();
-  }
-
-  formatFecha(fecha: any): string {
-    if (!fecha || !Array.isArray(fecha)) return '---';
-    const [year, month, day] = fecha;
-    return `${day < 10 ? '0'+day : day}/${month < 10 ? '0'+month : month}/${year}`;
-  }
+  // NAVEGACIÓN
+  irAGastos() { this.router.navigate(['/gastos']); }
+  irAIngresos() { this.router.navigate(['/ingresos']); }
+  irAFijos() { this.router.navigate(['/gastos-fijos']); }
+  onFechaChange() { this.cargarDatos(); }
 }
