@@ -27,6 +27,12 @@ public class Ingreso {
 
     private String descripcion;
 
+    //codigo para tener multiUsuarios asociados a cada ingreso
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    @com.fasterxml.jackson.annotation.JsonIgnore // Evita que el usuario se serialice en el JSON de salida
+    private User user;
+
     // getters y setters
 
     public Long getId() { return id; }
@@ -52,4 +58,8 @@ public class Ingreso {
     public String getDescripcion() { return descripcion; }
 
     public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
+
+    public User getUser() { return user; }
+
+    public void setUser(User user) { this.user = user; }
 }
