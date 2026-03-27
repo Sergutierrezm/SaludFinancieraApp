@@ -1,0 +1,35 @@
+.navbar {
+    display: flex;
+    justify-content: space-between; /* Esto empuja la marca a la izquierda y el usuario a la derecha */
+    align-items: center;
+    background-color: #1e293b; /* Un azul oscuro elegante */
+    color: white;
+    padding: 0.8rem 2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .brand {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  .user-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .btn-exit {
+    background-color: #ef4444;
+    color: white;
+    border: none;
+    padding: 6px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s;
+  }
+  
+  .btn-exit:hover {
+    background-color: #dc2626;
+  }
