@@ -30,6 +30,14 @@ public class Gasto {
 
     private String descripcion; //
 
+
+    //codigo para tener multiUsuarios asociados a cada gasto
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    @com.fasterxml.jackson.annotation.JsonIgnore
+    private User user;
+
+
     // Getters y setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -51,6 +59,9 @@ public class Gasto {
 
     public String getDescripcion() { return descripcion; }
     public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
+
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
 
 
 

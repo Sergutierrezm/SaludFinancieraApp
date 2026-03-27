@@ -1,6 +1,7 @@
 package com.saludfinanciera.app.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.saludfinanciera.app.converter.YearMonthAttributeConverter;
 import jakarta.persistence.*;
 
@@ -30,6 +31,11 @@ public class GastoFijo {
 
     private String descripcion; // Detalles opcionales
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore // Para que no explote el JSON al devolver datos
+    private User user;
+
     // Getters y setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -51,6 +57,9 @@ public class GastoFijo {
 
     public String getDescripcion() { return descripcion; }
     public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
+
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
 }
 
 

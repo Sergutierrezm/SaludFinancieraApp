@@ -34,17 +34,13 @@ public class GastoController {
         return gastoService.crear(dto);
     }
 
-        //Borrar por ID
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> borrarGasto(@PathVariable Long id) {
-        gastoService.borrarPorId(id);
-        return ResponseEntity.noContent().build(); // Devuelve 204 si se borró correctamente
-    }
-
-    //Actualizar por ID
     @PutMapping("/{id}")
     public GastoDTO actualizar(@PathVariable Long id, @RequestBody GastoDTO dto) {
         return gastoService.actualizar(id, dto);
     }
 
+    @DeleteMapping("/{id}")
+    public void borrar(@PathVariable Long id) {
+        gastoService.borrarPorId(id);
+    }
 }
