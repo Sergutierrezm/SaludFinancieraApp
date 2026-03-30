@@ -1,0 +1,15 @@
+# ETAPA 1: LA COCINA (Compilación)
+FROM node:20 AS build
+WORKDIR /app
+COPY . .
+RUN npm install
+# Generamos los archivos estáticos de producción
+RUN npx ng build --configuration production
+
+# ETAPA 2: EL SERVIDOR (Nginx)
+FROM nginx:alpine
+# Copiamos solo los archivos de la web terminada al servidor Nginx
+COPY --from=build /app/dist/frontend/browser /usr/share/nginx/html
+# Copiamos la configuración para que las rutas de Angular funcionen
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80

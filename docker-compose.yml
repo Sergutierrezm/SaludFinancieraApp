@@ -1,0 +1,45 @@
+services:
+  db:
+    image: postgres:15
+    container_name: salud-db
+    environment:
+      # Usamos exactamente lo que me has enseñado en tu terminal
+      - POSTGRES_DB=saludfinanciera
+      - POSTGRES_USER=sergiogutierrez
+      - POSTGRES_PASSWORD=12345Guti
+    ports:
+      - "5432:5432"
+
+  ollama:
+    image: ollama/ollama
+    container_name: ollama-service
+    volumes:
+      - ollama_storage:/root/.ollama
+    ports:
+      - "11434:11434"
+
+  backend:
+    build: ./backend
+    container_name: salud-backend
+    depends_on:
+      - db
+      - ollama
+    environment:
+      # El host es "db" porque es el nombre del servicio de arriba
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/saludfinanciera
+      - SPRING_DATASOURCE_USERNAME=sergiogutierrez
+      - SPRING_DATASOURCE_PASSWORD=12345Guti
+      - SPRING_AI_OLLAMA_BASE_URL=http://ollama:11434
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build: ./frontend
+    container_name: salud-frontend
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+
+volumes:
+  ollama_storage:
