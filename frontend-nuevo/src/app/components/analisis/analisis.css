@@ -1,0 +1,55 @@
+.analisis-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .controls {
+    display: flex;
+    gap: 20px;
+    align-items: flex-end;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    margin-bottom: 30px;
+  }
+  
+  .btn-analizar {
+    background: #6200ee;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .btn-analizar:disabled { background: #ccc; }
+  
+  .report-card {
+    background: #ffffff;
+    border-radius: 12px;
+    border-left: 6px solid #6200ee;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    overflow: hidden;
+  }
+  
+  .report-header {
+    background: #f4f0ff;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #6200ee;
+    font-weight: bold;
+  }
+  
+  .ia-text {
+    padding: 20px;
+    white-space: pre-wrap; /* Crucial para leer bien a la IA */
+    line-height: 1.6;
+    font-size: 1.05rem;
+    color: #333;
+  }

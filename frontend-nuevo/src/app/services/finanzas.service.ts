@@ -42,4 +42,14 @@ guardarGastoFijo(gastoFijo: GastoFijo): Observable<GastoFijo> {
   return this.http.post<GastoFijo>(`${this.apiUrl}/gastosfijos`, gastoFijo);
 }
 
+// Añade estos métodos al final de tu FinanzasService
+getConsejoRapido(): Observable<string> {
+  return this.http.get(`${this.apiUrl}/api/ia/consejo-mensual`, { responseType: 'text' });
+}
+
+getAnalisisCompleto(mes: string): Observable<string> {
+  // mes debe ser "YYYY-MM"
+  return this.http.get(`${this.apiUrl}/api/ia/analisis-completo/${mes}`, { responseType: 'text' });
+}
+
 }

@@ -1,35 +1,55 @@
 .navbar {
-    display: flex;
-    justify-content: space-between; /* Esto empuja la marca a la izquierda y el usuario a la derecha */
-    align-items: center;
-    background-color: #1e293b; /* Un azul oscuro elegante */
-    color: white;
-    padding: 0.8rem 2rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
-  
-  .brand {
-    font-size: 1.2rem;
-    font-weight: bold;
-  }
-  
-  .user-section {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-  }
-  
-  .btn-exit {
-    background-color: #ef4444;
-    color: white;
-    border: none;
-    padding: 6px 15px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background 0.2s;
-  }
-  
-  .btn-exit:hover {
-    background-color: #dc2626;
-  }
+  display: flex;
+  justify-content: space-between; /* Empuja los elementos a los extremos */
+  align-items: center;
+  padding: 0 2rem;
+  height: 70px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  color: #333;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 2rem; /* Espacio entre el link de IA y el usuario */
+}
+
+.nav-ia {
+  text-decoration: none;
+  font-weight: 600;
+  color: #6200ee;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background 0.3s;
+}
+
+.nav-ia:hover {
+  background-color: #f4f0ff;
+}
+
+.active-link {
+  background-color: #f4f0ff;
+  border-bottom: 2px solid #6200ee;
+}
+
+.user-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.btn-exit {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}

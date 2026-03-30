@@ -1,0 +1,35 @@
+<div class="analisis-container">
+    <div class="header-section">
+      <h2>🧠 Análisis de Salud Financiera</h2>
+      <p>La Inteligencia Artificial analizará tus ingresos, gastos fijos y variables.</p>
+    </div>
+  
+    <div class="controls">
+      <div class="input-group">
+        <label>Selecciona el mes:</label>
+        <input type="month" [(ngModel)]="mesSeleccionado" class="input-month">
+      </div>
+      <button (click) ="solicitarAnalisisIA()" [disabled]="cargando" class="btn-analizar">
+        {{ cargando ? 'Procesando datos...' : 'Generar Informe ✨' }}
+      </button>
+    </div>
+  
+    <div *ngIf="cargando" class="loading-box">
+      <div class="spinner"></div>
+      <p>Analizando tus patrones de gasto...</p>
+    </div>
+  
+    <div *ngIf="errorMsg" class="error-box">
+      ⚠️ {{ errorMsg }}
+    </div>
+  
+    <div *ngIf="informeIA && !cargando" class="report-card">
+      <div class="report-header">
+        <span class="ia-model">Modelo: Llama 3.2 (Local)</span>
+        <span class="report-date">{{ mesSeleccionado }}</span>
+      </div>
+      <div class="report-body">
+        <p class="ia-text">{{ informeIA }}</p>
+      </div>
+    </div>
+  </div>
